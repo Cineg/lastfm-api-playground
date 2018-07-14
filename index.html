@@ -42,6 +42,47 @@
                         </p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col s12">
+                        <p>
+                            <label>
+                                <input name="time" type="radio" checked value="overall"/>
+                                <span>Overall</span>
+                            </label>
+                            <label>
+                                <input name="time" type="radio"  value="7day" />
+                                <span>Week</span>
+                            </label>
+                            <label>
+                                <input name="time" type="radio"  value="1month" />
+                                <span>Month</span>
+                            </label>
+                            <label>
+                                <input name="time" type="radio"  value="12month" />
+                                <span>Year</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <p>
+                            How many results?
+                            <label>
+                                <input name="number" type="radio" checked value="9"/>
+                                <span>9</span>
+                            </label>
+                            <label>
+                                <input name="number" type="radio"  value="30" />
+                                <span>30</span>
+                            </label>
+                            <label>
+                                <input name="number" type="radio"  value="50" />
+                                <span>50</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
 
                     <button type="submit" id="form-button" class="btn waves-effect waves-light">Submit </button>
             </form>
@@ -50,9 +91,9 @@
 
             </div>
         </div>
-        <ul id="output" class="collection">
+        <div id="output">
 
-        </ul>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>

@@ -4,3 +4,60 @@
     background-color: #2a9e91;
     display: block;
 }
+
+.row{
+    margin-bottom: 0;
+}
+
+#form-button{
+    margin-bottom: 30px;
+}
+
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+}
+
+.grid > div{
+    height: 300px;
+    width: 300px;
+    position: relative;
+
+}
+
+.grid > div:hover .title-custom, .grid > div:hover .author-badge{
+    opacity: 1;
+}
+.title-custom{
+    position: absolute;
+    margin-left: 0px !important;
+    max-width: 300px;
+    top: calc(100% - 22px);
+    animation-name: opacity;
+    animation-duration: 3s;
+    transition: opacity .5s ease-in;
+    opacity: 0.05;
+}
+
+.author-badge{
+    position: absolute;
+    margin-left: 0px !important;
+    left: 0%;
+    max-width: 200px;
+    animation-name: opacity;
+    animation-duration: 3s;
+    transition: opacity .5s ease-in;
+    opacity: 0.05;
+}
+
+@keyframes opacity{
+    0%{opacity: 1}
+    90%{opacity: 1}
+    100%{opacity: 0.05}
+}
+
+.square-tile{
+    background-repeat: no-repeat !important; 
+    background-position: center !important;
+}

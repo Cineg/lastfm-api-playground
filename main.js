@@ -9,33 +9,23 @@ search.addEventListener('submit', e =>{
     const username = document.getElementById('username').value;
     //get data type searched
     const dataType = document.querySelector('input[name="datatype"]:checked').value;
-    const output = document.getElementById('output');
-  
-    
+    //time span
+    const time = document.querySelector('input[name="time"]:checked').value;
+    //number of results
+    const number = document.querySelector('input[name="number"]:checked').value;
+   
+
     if(username.trim() !== ''){
         fillInfo(username);
         if(dataType == 'gettopartists'){
-            getArtists(username, dataType)
-            .then(results => {
-                const max = results[0].playcount;
-    
-                results.forEach(item => {
-                const percent = (item.playcount / max) * 100; 
-                output.innerHTML += `
-                   <li class="collection-item avatar">
-                     <img src="${item.image[0]['#text']}" class="circle">
-                     <span class="title">${item.name}</span>
-                     <span class="new badge" data-badge-caption="scrobbles">${item.playcount}</span>
-                     <div class="bar" style="width: ${percent}%"></div>
-               `
-            })
-        });
+            getArtists(username, dataType, time)
+            .then(results => fillgridHTML(results, number))
         } else if(dataType == 'gettopalbums'){
-            getAlbums(username, dataType)
-            .then(results => console.log(results));
+            getAlbums(username, dataType, time)
+            .then(results => fillgridHTMLSongs(results, number));
         } else if(dataType == 'gettoptracks'){
-            getTracks(username, dataType)
-            .then(results => console.log(results));
+            getTracks(username, dataType, time)
+            .then(results => fillgridHTMLSongs(results, number));
         }
     }
     else{
@@ -47,34 +37,36 @@ search.addEventListener('submit', e =>{
 })
 
 // get top artists
-function getArtists(username, dataType){
+function getArtists(username, dataType, time){
 
     //get data from lastfm
-    return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.${dataType}&api_key=${APIKEY}&format=json&user=${username}`)
+    return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.${dataType}&api_key=${APIKEY}&format=json&user=${username}&period=${time}`)
         .then(response => response.json())
         .then(data => data.topartists.artist.map(data => data))
         .catch(err => console.log(err));
 }
 
-function getAlbums(username, dataType){
+//get top albums
+function getAlbums(username, dataType, time){
 
     //get data from lastfm
-    return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.${dataType}&api_key=${APIKEY}&format=json&user=${username}`)
+    return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.${dataType}&api_key=${APIKEY}&format=json&user=${username}&period=${time}`)
         .then(response => response.json())
         .then(data => data.topalbums.album.map(data => data))
         .catch(err => console.log(err));
 }
 
-function getTracks(username, dataType){
+//geet top tracks
+function getTracks(username, dataType, time){
 
     //get data from lastfm
-    return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.${dataType}&api_key=${APIKEY}&format=json&user=${username}`)
+    return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.${dataType}&api_key=${APIKEY}&format=json&user=${username}&period=${time}`)
         .then(response => response.json())
         .then(data => data.toptracks.track.map(data => data))
         .catch(err => console.log(err));
 }
 
-
+//get user info
 function userInfo(username){
     return fetch(`http://ws.audioscrobbler.com/2.0/?method=user.getinfo&api_key=${APIKEY}&format=json&user=${username}`)
         .then(response => response.json())
@@ -82,8 +74,10 @@ function userInfo(username){
         .catch(err => console.log(err));
 }
 
+//fill info into html
 function fillInfo(username){
     const userInfoOutput = document.getElementById('userInfoOutput');
+    userInfoOutput.innerHTML = '';
     userInfo(username)
     .then(result =>{
         userInfoOutput.innerHTML += `
@@ -99,4 +93,58 @@ function fillInfo(username){
     `
     })
 
+}
+
+function fillHTML(results){
+    //get max playcount
+    const max = results[0].playcount;
+    //clear html div 
+    output.innerHTML = '<ul class="collection" id="list"></ul>';
+
+    results.forEach(item => {
+        const percent = (item.playcount / max) * 100; 
+        const list = document.getElementById('list');
+        list.innerHTML += `
+        <li class="collection-item avatar">
+         <img src="${item.image[0]['#text']}" class="circle">
+         <span class="title">${item.name}</span>
+         <span class="new badge" data-badge-caption="scrobbles">${item.playcount}</span>
+         <div class="bar" style="width: ${percent}%"></div>
+    `
+    })
+
+}
+
+function fillgridHTML(results, number){
+    const max = results[0].playcount;
+    output.classList.add('grid');
+
+    output.innerHTML = '';
+
+    for(let i=0; i<number; i++){
+        console.log(results[0]);
+        output.innerHTML += `
+        <div class="square-tile" style="background: url('${results[i].image[3]['#text']}');">
+         <span class="new badge red author-badge" data-badge-caption="">${results[i].name}</span>
+         <span class="new badge" data-badge-caption="scrobbles">${results[i].playcount}</span>
+         `
+    }
+}
+
+
+function fillgridHTMLSongs(results, number){
+    const max = results[0].playcount;
+    output.classList.add('grid');
+
+    output.innerHTML = '';
+
+    for(let i=0; i<number; i++){
+        console.log(results[0]);
+        output.innerHTML += `
+        <div class="square-tile" style="background: url('${results[i].image[3]['#text']}');">
+         <span class="title title-custom new badge blue" data-badge-caption="" >${results[i].name}</span>
+         <span class="new badge red author-badge" data-badge-caption="">${results[i].artist.name}</span>
+         <span class="new badge" data-badge-caption="scrobbles">${results[i].playcount}</span>
+         `
+    }
 }
