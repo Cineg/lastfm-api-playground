@@ -9,10 +9,10 @@
     margin-bottom: 0;
 }
 
-#form-button{
-    margin-bottom: 30px;
-}
 
+.grid{
+    justify-content: center;
+}
 
 .grid3{
     display: grid;
@@ -28,6 +28,10 @@
 }
 
 .grid > div{
+    position: relative;
+}
+
+.grid3 > div{
     height: 300px;
     width: 300px;
     position: relative;

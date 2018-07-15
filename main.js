@@ -3,6 +3,7 @@ const APIKEY = 'dd40e7897a7d237d17d21f033ffbea3f';
 //get searchform from dom
 const search = document.getElementById('searchForm');
 const output = document.getElementById('output');
+const renderBtn = document.getElementById('render');
 
 
 search.addEventListener('submit', e =>{
@@ -129,15 +130,15 @@ function fillgridHTML(results, number, numbers){
     for(let i=0; i<numbers; i++){
         output.innerHTML += `
         <div class="square-tile" style="background: url('${results[i].image[3]['#text']}');">
-         <span class="new badge red author-badge" data-badge-caption="">${results[i].name}</span>
-         <span class="new badge" data-badge-caption="scrobbles">${results[i].playcount}</span>
-         `
+        <a href="${results[i].url}"><span class="new badge red author-badge" data-badge-caption="">${results[i].name}</span></a>
+        <span class="new badge" data-badge-caption="scrobbles">${results[i].playcount}</span>
+        `
     }
 }
 
 //render nice grid 
 function fillgridHTMLSongs(results, number, numbers){
-    const max = results[0].playcount;
+    console.log(results[0]);
     output.classList.add(`grid${number}`);
 
     output.innerHTML = '';
@@ -146,8 +147,8 @@ function fillgridHTMLSongs(results, number, numbers){
         for(let i=0; i<numbers; i++){
             output.innerHTML += `
             <div class="square-tile" style="background: url('${results[i].image[2]['#text']}');">
-             <span class="title title-custom new badge blue" data-badge-caption="" >${results[i].name}</span>
-             <span class="new badge red author-badge" data-badge-caption="">${results[i].artist.name}</span>
+            <a href="${results[i].url}"><span class="title title-custom new badge blue" data-badge-caption="" >${results[i].name}</span></a>
+             <a href="${results[i].artist.url}"><span class="new badge red author-badge" data-badge-caption="">${results[i].artist.name}</span></a>
              <span class="new badge" data-badge-caption="scrobbles">${results[i].playcount}</span>
              `
         }
@@ -155,8 +156,8 @@ function fillgridHTMLSongs(results, number, numbers){
         for(let i=0; i<numbers; i++){
             output.innerHTML += `
             <div class="square-tile" style="background: url('${results[i].image[3]['#text']}');">
-             <span class="title title-custom new badge blue" data-badge-caption="" >${results[i].name}</span>
-             <span class="new badge red author-badge" data-badge-caption="">${results[i].artist.name}</span>
+             <a href="${results[i].url}"><span class="title title-custom new badge blue" data-badge-caption="" >${results[i].name}</span></a>
+             <a href="${results[i].artist.url}"><span class="new badge red author-badge" data-badge-caption="">${results[i].artist.name}</span></a>
              <span class="new badge" data-badge-caption="scrobbles">${results[i].playcount}</span>
              `
         }
@@ -175,3 +176,17 @@ function clearOutput(){
         output.classList.remove('grid5');
     }
 }
+
+
+
+
+//render image
+document.getElementById('render').addEventListener('click', () =>{
+    
+    let node = document.getElementById('output');
+    
+    domtoimage.toBlob(node).then(function (blob) {
+        window.saveAs(blob, 'my-node.png');
+    });
+});
+
