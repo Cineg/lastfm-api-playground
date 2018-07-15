@@ -14,21 +14,40 @@
 }
 
 
-.grid{
+.grid3{
     display: grid;
     grid-template-columns: repeat(3, 300px);
+}
+.grid4{
+    display: grid;
+    grid-template-columns: repeat(4, 250px);
+}
+.grid5{
+    display: grid;
+    grid-template-columns: repeat(5, 200px);
 }
 
 .grid > div{
     height: 300px;
     width: 300px;
     position: relative;
-
 }
+
+.grid4 > div{
+    height: 250px;
+    width: 250px;
+}
+
+.grid5 > div{
+    height: 200px;
+    width: 200px;
+}
+
 
 .grid > div:hover .title-custom, .grid > div:hover .author-badge{
     opacity: 1;
 }
+
 .title-custom{
     position: absolute;
     margin-left: 0px !important;
@@ -60,4 +79,5 @@
 .square-tile{
     background-repeat: no-repeat !important; 
     background-position: center !important;
+    background-size: cover !important;
 }
